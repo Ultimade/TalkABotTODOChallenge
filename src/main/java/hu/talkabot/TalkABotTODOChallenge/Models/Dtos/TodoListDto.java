@@ -16,7 +16,9 @@ public class TodoListDto {
 
     private String name;
 
-    private Date deadline;
+    private String deadline;
 
-    private Priority priority;
+    private String createdDate;
+
+    private String priority;
 }

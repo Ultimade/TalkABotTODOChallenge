@@ -1,0 +1,37 @@
+<div class="Col-md-11">
+    <form method="POST" class="form-horizontal" id="todo-input-form"  style="padding: 10px;">
+
+        <input th:type="hidden" class="todo-id form-control" id="id" name="id" th:value="${todo?.Id}"/>
+        <div class="row">
+            <div class="col-md-3">
+                <label th:text="#{name}"> Név</label>
+            </div>
+            <div class="col-md-9 ">
+                <input th:type="text" class="todo-name form-control" id="name" name="name" placeholder="Todo name" th:value="${todo?.name}" required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <input type="hidden" name="asd" th:value="${todo?.priority}">
+            <div class="col-md-3">
+                <label th:text="#{priority}"> Prioritás</label>
+            </div>
+            <div class="col-md-9 ">
+                <select name="priority" id="priority" class="form-control" required="required">
+                    <option th:value="null">-</option>
+                    <option th:each="priority : ${priorityList}" th:value="${priority}"
+                            th:text="${priority}" th:selected="${todo?.priority != null and priority == todo.priority ? 'selected' : 'false'}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label th:text="#{deadline}"> Határidő </label>
+            </div>
+            <div class="col-md-9 ">
+                <input th:type="date" class="todo-name form-control declaration-input datepicker" id="deadline" name="deadline" placeholder="Todo határidő" th:value="${todo?.deadline}" />
+            </div>
+        </div>
+    </form>
+
+</div>

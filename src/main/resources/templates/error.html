@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <object th:include="fragments/header :: head" th:remove="tag"/>
+    <title th:text="${'LTSD - '} + #{xml_upload}"></title>
+    <style>
+        .error-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        .error-actions .btn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="error-template">
+            <h1>Oops!</h1>
+            <h2>Something went wrong!</h2>
+            <div class="error-details">
+                Sorry, an error has occured. More info:<br/>
+
+                <p th:if="${status}">
+                    <b>Response Status:</b> <span th:text="${status}">status-code</span> <span
+                        th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+                </p>
+
+                <p th:if="${url}">
+                    <b>Page:</b> <span th:text="${url}">Page URL</span>
+                </p>
+                <p id='created' th:if="${timestamp}">
+                    <b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
+                </p>
+
+                <div
+                        th:if="${ex} or ${exception} or (${message} and ${message.length() != 0})">
+                    <b>Cause:</b> <span th:if="${ex}" th:text="${ex}">exception ...</span>
+                    <span th:if="${exception}" th:text="${exception}">exception ...</span>
+                    <span th:if="${message} and ${message.length() != 0}"
+                          th:text="${message}">message ...</span>
+                </div>
+
+                <p
+                        th:unless="${ex} or ${exception} or (${message} and ${message.length() != 0})">
+                    Cause unknown (no exception details available)</p>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</body>
+</html>

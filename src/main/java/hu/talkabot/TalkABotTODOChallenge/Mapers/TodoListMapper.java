@@ -4,13 +4,21 @@ package hu.talkabot.TalkABotTODOChallenge.Mapers;
 import hu.talkabot.TalkABotTODOChallenge.Models.Dtos.TodoListDto;
 import hu.talkabot.TalkABotTODOChallenge.Models.TodoList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TodoListMapper extends BaseMapper {
 
     public TodoListDto convertToddoListEntityToDto(TodoList todoList) {
-        return modelMapper.map(todoList, TodoListDto.class);
+
+        SimpleDateFormat formatOfDate = new SimpleDateFormat("yyyy-MM-dd");
+        TodoListDto todoListDto = modelMapper.map(todoList, TodoListDto.class);
+        todoListDto.setCreatedDate(formatOfDate.format(todoList.getCreatedDate()));
+        if (todoList.getDeadline() != null){
+            todoListDto.setDeadline(formatOfDate.format(todoList.getDeadline()));
+        }
+        return todoListDto;
     }
 
     public TodoList convertTodoListDtoToEntity(TodoListDto todoListDto) {

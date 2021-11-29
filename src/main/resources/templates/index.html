@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+
+    <object th:include="fragments/header :: head" th:remove="tag"/>
+    <title th:text="${'TOTO - '} + #{dashboard}"></title>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+
+<div class="container">
+    <div class="index-text-color jumbotron text-center">
+        <h1>Welcome To TODO list editor application</h1>
+        <p>Manage TODO list</p>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</body>
+</html>
