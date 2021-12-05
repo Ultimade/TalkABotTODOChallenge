@@ -42,6 +42,12 @@ public class TodoListCriteriaRepository {
         return results;
     }
 
+    /**
+     * a frontendtől kapott paraméterek alapján szűrést, rendezést és limitálást végez az adatokon
+     * majd az eredményt a frontend számára megfelelő formában visszaadja
+     * @param input
+     * @return
+     */
     public DataTablesOutput<TodoListDto> getTodosByCriterias(DataTablesInput input){
         Session session = HibernateUtil.getSessionFactory().openSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
