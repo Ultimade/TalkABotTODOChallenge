@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Repository
@@ -47,7 +48,7 @@ public class TodoListCriteriaRepository {
         CriteriaQuery<TodoList> cr = cb.createQuery(TodoList.class);
         Root<TodoList> root = cr.from(TodoList.class);
         cr.select(root).where(cb.like(root.get("name"), "%"+input.getColumn("name").getSearch().getValue()+"%"));
-        if (input.getColumn("priority").getSearch().getValue()!="")
+        if (!Objects.equals(input.getColumn("priority").getSearch().getValue(), ""))
         cr.select(root).where(cb.equal(root.get("priority"), Priority.valueOf(input.getColumn("priority").getSearch().getValue())));
 
 
@@ -55,7 +56,7 @@ public class TodoListCriteriaRepository {
         ArrayList<Date> createdDateArray = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        if(createdDate!="")
+        if(!Objects.equals(createdDate, ""))
         {
             String[] splittedDates = createdDate.split(" - ");
 
@@ -68,10 +69,9 @@ public class TodoListCriteriaRepository {
                 Predicate ltTo = cb.lessThan(root.get("createdDate"), createdDateArray.get(1));
 
                 cr.select(root).where(cb.and(geFrom, ltTo));
-                
-                //cr.select(root).where(cb.between(root.get("createdDate"), createdDateArray.get(0), createdDateArray.get(1)));
-            }catch (Exception ex){
 
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
 
@@ -80,18 +80,20 @@ public class TodoListCriteriaRepository {
 
         ArrayList<Date> deadlineArray = new ArrayList<>();
 
-        if(deadline!="")
+        if(!Objects.equals(deadline, ""))
         {
             String[] splittedDates = deadline.split(" - ");
             try {
                 deadlineArray.add(formatter.parse(splittedDates[0]));
                 deadlineArray.add(new Date(formatter.parse(splittedDates[1]).getTime() + TimeUnit.DAYS.toMillis(1)));
-                if (deadlineArray.get(0).equals(deadlineArray.get(1))){
-                    cr.select(root).where(cb.equal(root.get("deadline"), deadlineArray.get(0)));
-                }else{
-                    cr.select(root).where(cb.between(root.get("deadline"), deadlineArray.get(0), deadlineArray.get(1)));
-                }
-            }catch (Exception e) {}
+
+                Predicate geFrom = cb.greaterThanOrEqualTo(root.get("deadline"), deadlineArray.get(0));
+                Predicate ltTo = cb.lessThan(root.get("deadline"), deadlineArray.get(1));
+
+                cr.select(root).where(cb.and(geFrom, ltTo));
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         List<javax.persistence.criteria.Order> orderList = new ArrayList();

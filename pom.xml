@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>hu.talkabot</groupId>
 	<artifactId>TalkABotTODOChallenge</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>TalkABotTODOChallenge</name>
 	<description>Resolving Talk A Bot coding challenge</description>
 	<properties>

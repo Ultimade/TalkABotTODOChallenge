@@ -1,0 +1,42 @@
+version: "3.3"
+services:
+  pg_todo:
+    image: postgres:11-alpine
+    restart: always
+    networks:
+      - bifrost
+    container_name: pg-todo
+    volumes:
+      - pgdata-todo:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+    ports:
+      - 54900:5432
+    environment:
+      - POSTGRES_DB=todo
+      - POSTGRES_USER=todo
+      - POSTGRES_PASSWORD=ieQu2uKu
+
+
+  todo:
+    image: /todo:live-1.0.0
+    networks:
+      - bifrost
+    container_name: todo
+    ports:
+      - 8182:8182
+    restart: unless-stopped
+#    volumes:
+#      - /etc/localtime:/etc/localtime
+#      - /etc/timezone:/etc/timezone
+    depends_on:
+      - pg_todo
+    links:
+      - pg_todo
+
+networks:
+  bifrost:
+    driver: bridge
+
+volumes:
+  pgdata-todo:

@@ -1,7 +1,6 @@
 package hu.talkabot.TalkABotTODOChallenge.Controllers;
 
 import hu.talkabot.TalkABotTODOChallenge.Enums.Priority;
-import hu.talkabot.TalkABotTODOChallenge.Models.Dtos.TodoListDto;
 import hu.talkabot.TalkABotTODOChallenge.Services.TodoListService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,7 +21,8 @@ public class DefaultController {
 
     @GetMapping(value = {"/", "/index"})
     public String index() {
-        return "index";
+        return "todo/list";
+        //return "index";
     }
 
     @GetMapping(value = {"/create-todo-dialog"})
@@ -34,7 +34,6 @@ public class DefaultController {
     public String editTodoDialog(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("priorityList", getPriorityList());
         model.addAttribute("todo", todoListService.getTodoListDtoById(id));
-        TodoListDto asd =todoListService.getTodoListDtoById(id);
         return "todo/modals/addOrEditTodo";
     }
 
