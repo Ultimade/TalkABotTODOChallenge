@@ -4,6 +4,7 @@ import hu.talkabot.TalkABotTODOChallenge.Enums.Priority;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -13,11 +14,11 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoList extends BaseEntity{
+public class TodoList extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -28,4 +29,5 @@ public class TodoList extends BaseEntity{
 
     @Column(name = "priority", nullable = false)
     private Priority priority;
+
 }

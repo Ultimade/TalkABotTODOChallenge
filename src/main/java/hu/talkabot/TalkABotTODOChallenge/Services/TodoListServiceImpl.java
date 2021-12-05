@@ -6,6 +6,7 @@ import hu.talkabot.TalkABotTODOChallenge.Models.Api.RestResponse;
 import hu.talkabot.TalkABotTODOChallenge.Models.Dtos.ToTodoListDto;
 import hu.talkabot.TalkABotTODOChallenge.Models.Dtos.TodoListDto;
 import hu.talkabot.TalkABotTODOChallenge.Models.TodoList;
+import hu.talkabot.TalkABotTODOChallenge.Repositories.TodoListCriteriaRepository;
 import hu.talkabot.TalkABotTODOChallenge.Repositories.TodoListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
@@ -31,6 +32,9 @@ public class TodoListServiceImpl implements TodoListService {
     @Autowired
     TodoListRepository todoListRepository;
 
+    @Autowired
+    TodoListCriteriaRepository todoListCriteriaRepository;
+
     /**
      * shorting and filtering to-do entities
      * @param input contains all necessary data for querying data's
@@ -52,6 +56,7 @@ public class TodoListServiceImpl implements TodoListService {
             createdDateArray.add(LocalDateTime.parse(splittedDates[0], formatter));
             createdDateArray.add(LocalDateTime.parse(splittedDates[1], formatter));
         }
+
 
         Specification<TodoList> additionalSpecification = new Specification<TodoList>() {
 
@@ -91,8 +96,23 @@ public class TodoListServiceImpl implements TodoListService {
                     todoList = todoOpt.get();
                 }
             }
-            todoListRepository.save(updateTodolistByDto(todoListDto, todoList));
-            return new RestResponse("Creating or editing TODO finished!", SUCCESS);
+            /**
+             * basic jpa repository
+             * todoListRepository.save(updateTodolistByDto(todoListDto, todoList));
+             * return new RestResponse("Creating or editing TODO finished!", SUCCESS);
+             **/
+            Boolean isSuccess = false;
+            if(todoList.getId() == null){
+                isSuccess = todoListCriteriaRepository.createTodo(updateTodolistByDto(todoListDto, todoList));
+            }else{
+                isSuccess = todoListCriteriaRepository.updateTodo(updateTodolistByDto(todoListDto, todoList));
+            }
+            if(isSuccess){
+                return new RestResponse("Creating or editing TODO finished!", SUCCESS);
+            }else{
+                return new RestResponse("Creating or editing TODO finished with error!", ERROR);
+            }
+
         }catch (Exception e) {
             e.printStackTrace();
             return new RestResponse("Creating or editing TODO finished with error! Error:"+ Arrays.toString(e.getStackTrace()), ERROR);
@@ -136,8 +156,12 @@ public class TodoListServiceImpl implements TodoListService {
     @Override
     public RestResponse deleteTodoList(Long id) {
         try {
-            todoListRepository.deleteById(id);
-            return new RestResponse("Deleting TODO finished!", SUCCESS);
+            /*todoListRepository.deleteById(id);*/
+            if (todoListCriteriaRepository.deleteTodoById(id)){
+                return new RestResponse("Deleting TODO finished!", SUCCESS);
+            }else{
+                return new RestResponse("Deleting TODO terminated!", ERROR);
+            }
         }catch (Exception e) {
             return new RestResponse(e.getMessage(), ERROR);
         }
@@ -155,4 +179,8 @@ public class TodoListServiceImpl implements TodoListService {
 
     }
 
+    public DataTablesOutput<TodoListDto> getTodosCriteria(DataTablesInput input) {
+
+        return todoListCriteriaRepository.getTodosByCriterias(input);
+    }
 }

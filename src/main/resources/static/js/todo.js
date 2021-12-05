@@ -72,12 +72,12 @@ $(document).ready(function () {
                     "targets": [ 3 ],
                     "render":function(data, type, row, meta){
                         if (row.priority == "LOW") {
-                            return '<label data-column="1">LOW</label>'
+                            return '<label data-column="LOW">LOW</label>'
                         } else if (row.priority == 'MEDIUM') {
-                            return '<label data-column="2">MEDIUM</label>'
+                            return '<label data-column="MEDIUM">MEDIUM</label>'
 
                         } else if (row.priority == 'HIGH') {
-                            return '<label data-column="3">HIGH</label>'
+                            return '<label data-column="HIGH">HIGH</label>'
 
                         }
                         else {
@@ -144,7 +144,7 @@ $(document).ready(function () {
             timePicker24Hour: true,
             showDropdowns: true,
             startDate: moment().startOf('hour'),
-            endDate: moment().startOf('hour').add(32, 'hour'),
+            endDate: moment().startOf('hour'),
             applyButtonClasses: "btn-primary "+buttonApplyClass,
             locale: {
                 format: 'YYYY-MM-DD HH:mm',
@@ -259,8 +259,8 @@ $(document).ready(function () {
         var newDiv = $(document.createElement('div'));
         newDiv.html(reply);
         dialog = newDiv.dialog({
-            height: 700,
-            width: 750,
+            height: 300,
+            width: 600,
             modal: true,
             title: "Tárgy Szerkesztés",
             buttons: {

@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "hu.talkabot.TalkABotTODOChallenge.Models.TodoList" table = "table_todo">
+
+        <meta attribute = "class-description">
+            This class contains the TODO list detail.
+        </meta>
+
+        <id name = "id" type = "long" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <property name = "name" column = "name" type = "string"/>
+        <property name = "deadline" column = "deadline" type = "date"/>
+        <property name="priority" column="priority">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">hu.talkabot.TalkABotTODOChallenge.Enums.Priority</param>
+            </type>
+        </property>
+        <property name = "version" column = "version" type = "long"/>
+        <property name = "createdDate" column = "created_date" type = "date"/>
+        <property name = "updatedDate" column = "updated_date" type = "date"/>
+        <property name = "createdBy" column = "created_by" type = "string"/>
+        <property name = "modifiedBy" column = "modified_by" type = "string"/>
+
+    </class>
+</hibernate-mapping>
